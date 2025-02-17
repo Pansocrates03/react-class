@@ -4,60 +4,64 @@ import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Paragraph from './components/Paragraph';
-import Button from './components/Button';
 import List from './components/List';
+import Boton from './components/Boton'
+import Add from './components/Add';
+import { BrowserRouter } from 'react-router-dom';
+import { Routes } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { Button } from '@mui/material';
+import ResponsiveAppBar from './components/ResponsiveAppBar';
+import { useNavigate } from 'react-router-dom';
+import CredentialSignInPage from './components/Login';
+
+const pages = ["Inventario", "AgregarProducto"];
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [elementos, setElementos] = useState([
-    { name: "Aumentar", action: () => sum(), key: "1" },
-    { name: "Disminuir", action: () => resta(), key: "2" }
-  ]);
-  const [record, setRecord] = useState(0);
-  const [historia, setHistoria] = useState([]);
-
-  useEffect(() => {
-    mezclarArreglo();
-  }, [count]);
-
+  const [items, setItems] = useState([
+    {id: 1, name: "item1", price: 1},
+    {id: 2, name: "item2", price: 2},
+    {id: 3, name: "item3", price: 3},
+  ])
+  let [count, setCount] = useState(0);
   const sum = () => {
-    setCount(prevCount => {
-      const newCount = prevCount + 1;
-      if (newCount >= record) {
-        setRecord(newCount);
-      }
-      return newCount;
-    });
-
-    setHistoria(prevHistoria => {
-      return [...prevHistoria, { accion: "Sumar", valor: count + 1 }];
-    });
+    setCount(count +1)
   }
-
   const resta = () => {
-    setCount(prevCount => prevCount - 1);
+    setCount(count-1)
+  }
+  const add = (item) => {
+    item.id = items.length +1;
+    items.push(item);
+    console.log(items)
+  }
+  const del = (id) => {
+    items.filter((item) => item.id !== id);
   }
 
-  const mezclarArreglo = () => {
-    const nuevoArreglo = [...elementos];
-    for (let i = nuevoArreglo.length - 1; i > 0; i--) {
-      let indiceAleatorio = Math.floor(Math.random() * (i + 1));
-      let temporal = nuevoArreglo[i];
-      nuevoArreglo[i] = nuevoArreglo[indiceAleatorio];
-      nuevoArreglo[indiceAleatorio] = temporal;
-    }
-    setElementos(nuevoArreglo);
-  }
+
+
 
   return (
-    <div className="App">
-      <Header count={count} />
-      <Paragraph />
-      {elementos.map((elemento, index) => (
-        <Button name={elemento.name} suma={elemento.action} key={elemento.key} />
-      ))}
-      <List items={historia} />
-      <Footer record={record} />
+    <div>
+      <BrowserRouter>
+
+      <ResponsiveAppBar />
+        <Header />
+        <Routes>
+          <Route path="/" element={<Add add={CredentialSignInPage} />} />
+          <Route path="/items" element={<List items={items} ondelete={del} />} />
+          <Route path="/contact" element={<Header />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+      
+      {/* {count}
+      <Boton name={"suma"} click={sum} />
+      <Boton name={"resta"} click={resta} />
+      <Boton name={"mensaje"} click={() => alert("Hola")} /> */}
+      <Add add={add} />
+      <List items={items} ondelete={del} />
     </div>
   );
 }

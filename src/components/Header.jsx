@@ -1,9 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-const Header = (props) => {
+const Header = () => {
   return (
     <div>
-      <h1>{props.count}</h1>
+      <h1>Header</h1>
+      <Link to="/add">Añadir</Link>
+      <Link to="/items">Añadir</Link>
     </div>
   )
 }

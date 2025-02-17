@@ -1,16 +1,16 @@
 import React from 'react'
 import Item from './Item'
 
-const List = (props) => {
-    if(props.items.length === 0) {
-        return <p>No hay elementos</p>
-    }
+const List = ({ items, ondelete }) => {
+
   return (
-    <ol>
-        {props.items.map((item, index) => (
-            <Item key={index} item={item} index={index} />
-        ))}
-    </ol>
+    <>
+    {
+      items.map((i) => {
+        <Item items={i} key={i.id} ondelete={ondelete} />
+      })
+    }
+    </>
   )
 }
 

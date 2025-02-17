@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Footer = (props) => {
+const Footer = () => {
   return (
     <div>
-      <h1>Tu record es {props.record}</h1>
+      <h6>Footer</h6>
     </div>
   )
 }
